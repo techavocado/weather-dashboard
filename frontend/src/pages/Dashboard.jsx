@@ -16,7 +16,7 @@ export default function Dashboard() {
     fetch("http://localhost:8000/api/forecast?city=Ahmedabad")
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      // console.log(data);
       setForecast(data);
     });
   }, []);

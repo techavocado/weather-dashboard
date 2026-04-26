@@ -1,0 +1,8 @@
+.Box{
+    background-color:rgb(63, 59, 59) ;
+    width: 100px;
+    padding: 23px 15px 10px 14px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+}

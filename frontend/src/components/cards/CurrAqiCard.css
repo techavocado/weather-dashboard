@@ -1,0 +1,32 @@
+.AqiContent{
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+.AqiCircle {
+  width: 40px;          
+  height: 40px;
+  border-radius: 50%;   
+  display: flex;        
+  align-items: center;
+  justify-content: center;
+}
+
+.AqiDigit {
+  margin: 0;           
+  font-size: 1.5rem;
+  font-weight: lighter;
+  color: #000000;
+}
+
+.AqiLabel{
+    color: white;
+    font-size: large;
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}

@@ -1,4 +1,34 @@
-export default function UVCard({ value = 0 }) {
+import { useEffect, useState } from "react";
+
+export default function UVCard() {
+    const [uvValue, setUvValue] = useState(null);
+
+    useEffect(() => {
+        fetch("http://localhost:8000/api/uvindex?city=Ahmedabad")
+            .then((res) => res.json())
+            .then((data) => {
+                // console.log(data);
+                setUvValue(data);
+            })
+            .catch((err) => console.error("Error fetching UV data:", err));
+    }, []);
+
+
+    function getCurrentUV() {
+        const uvArray = uvValue?.hourly?.uv_index;
+        
+        if (!uvArray) return "Loading...";
+
+        // Get current hour (0-23)
+        const hour = new Date().getHours();
+
+        // Get value from array
+        const currentUV = uvArray[hour];
+
+        return currentUV;
+    }
+
+    const value = getCurrentUV();
 
     const safeValue = Math.min(Math.max(value, 0), 12);
     const percent = (safeValue / 12) * 100;
@@ -23,9 +53,9 @@ export default function UVCard({ value = 0 }) {
                     height: "150px",
                     borderRadius: "50%",
                     background: `conic-gradient(
-    orange ${percent}%,
-    #333 ${percent}%
-  )`,
+                    orange ${percent}%,
+                    #333 ${percent}%
+                    )`,
                     transform: "rotate(-90deg)"
                 }} />
 

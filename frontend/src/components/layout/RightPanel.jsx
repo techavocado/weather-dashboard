@@ -5,6 +5,7 @@ import UVCard from "../cards/UvCard";
 import HumidityCard from "../cards/HumidityCard";
 import FeelsLikeCard from "../cards/FeelsLIkeCard";
 import VisibilityCard from "../cards/VisibilityCard";
+import CurrAqiCard from "../cards/CurrAqiCard";
 
 import {
   Chart as ChartJS,
@@ -17,7 +18,7 @@ import {
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
 export default function RightPanel({ weather, forecast }) {
-  console.log(weather);
+  // console.log(weather);
 
   const windData = forecast?.slice(0, 20).map((item) =>
     Math.round(item.wind.speed * 3.6)
@@ -48,8 +49,8 @@ export default function RightPanel({ weather, forecast }) {
         {weather && (
           <>
             <WindCard windData={windData} windLabels={windLabels} forecast={forecast} />
-            <UVCard value={9} />
-            <StatCard title="sunrise and sunset" />
+            <UVCard/>
+            <StatCard sunrise={weather?.sunrise} sunset={weather?.sunset} />
             <HumidityCard
               value={weather?.humidity}
               temp={weather?.temp}
@@ -63,7 +64,7 @@ export default function RightPanel({ weather, forecast }) {
           </>
         )}
       </div>
-
+        <CurrAqiCard />
     </div>
   );
 }
