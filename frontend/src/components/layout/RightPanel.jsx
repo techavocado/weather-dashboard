@@ -1,45 +1,38 @@
 import StatCard from "../cards/StatCard";
 import WeeklyForecast from "../forecast/WeeklyForecast";
+import WindCard from "../cards/WindCard"
+import UVCard from "../cards/UvCard";
+import HumidityCard from "../cards/HumidityCard";
+import FeelsLikeCard from "../cards/FeelsLIkeCard";
+import VisibilityCard from "../cards/VisibilityCard";
+
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+} from "chart.js";
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
 export default function RightPanel({ weather, forecast }) {
+  console.log(weather);
+
+  const windData = forecast?.slice(0, 20).map((item) =>
+    Math.round(item.wind.speed * 3.6)
+  );
+
+  const windLabels = forecast?.slice(0, 20).map((item) => {
+    const d = new Date(item.dt_txt);
+    return d.toLocaleTimeString([], {
+      hour: "numeric",
+      hour12: true,
+    });
+  });
+
   return (
     <div style={{ width: "70%", padding: "20px", background: "#111" }}>
-      {forecast && (
-        <div style={{ marginBottom: "20px" }}>
-          <h3 style={{ color: "white" }}>Next 24 Hours</h3>
-
-          <div style={{ display: "flex", gap: "10px", overflowX: "auto" }}>
-            {forecast.map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  minWidth: "80px",
-                  padding: "10px",
-                  background: "#222",
-                  borderRadius: "10px",
-                  color: "white",
-                  textAlign: "center",
-                }}
-              >
-                {/* TIME */}
-                <p>
-                  {item.dt_txt.split(" ")[1].slice(0, 5)}
-                </p>
-
-                {/* TEMP */}
-                <p>
-                  {Math.round(item.main.temp)}°C
-                </p>
-
-                {/* CONDITION */}
-                <p>
-                  {item.weather[0].main}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       <WeeklyForecast />
 
       <h2 style={{ color: "white" }}>Today’s Overview</h2>
@@ -54,12 +47,19 @@ export default function RightPanel({ weather, forecast }) {
       >
         {weather && (
           <>
-            <StatCard title="Wind" value={weather.windSpeed} unit="km/h" />
-            <StatCard title="Humidity" value={weather.humidity} unit="%" />
-            <StatCard title="AQI" value="120" unit="" />
-            <StatCard title="Visibility" value={weather.visibility / 1000} unit="km" />
-            <StatCard title="Feels Like" value={weather.feelsLike} unit="°C" />
-            <StatCard title="UV Index" value="5" unit="" />
+            <WindCard windData={windData} windLabels={windLabels} forecast={forecast} />
+            <UVCard value={9} />
+            <StatCard title="sunrise and sunset" />
+            <HumidityCard
+              value={weather?.humidity}
+              temp={weather?.temp}
+            />
+            <VisibilityCard value={weather?.visibility} />
+            <FeelsLikeCard
+              temp={weather?.temp}
+              feelsLike={weather?.feelsLike}
+            />
+
           </>
         )}
       </div>

@@ -23,7 +23,7 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      <LeftPanel weather={weather} />
+      <LeftPanel weather={weather} forecast={forecast} />
       <RightPanel weather={weather} forecast={forecast} />
     </div>
   );
