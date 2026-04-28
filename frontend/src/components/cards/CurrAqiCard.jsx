@@ -2,16 +2,16 @@ import { useEffect, useState } from "react";
 import "./CurrAqiCard.css"
 import AqiComponents from "./AqiComponents";
 
-export default function CurrAqiCard() {
+export default function CurrAqiCard({city}) {
     let [currAqi, setCurrAqi] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/curraqi?city=Ahmedabad`)
+        fetch(`http://localhost:8000/api/curraqi?city=${city}`)
             .then((res) => res.json())
             .then((data) => {
                 setCurrAqi(data);
             })
-    }, []);
+    }, [city]);
 
     const aqiLevels = {
         1: { label: "Good", color: "#00e400" },
@@ -26,10 +26,10 @@ export default function CurrAqiCard() {
     const current = aqiLevels[aqiValue] || { label: "N/A", color: "#ccc" };
 
     return (
-        <div className="card" style={{ marginTop: "20px", width: "93%" }}>
+        <div className="card" style={{ marginTop: "12px", width: "95.5%",height: "90px"}}>
             <div className="AqiContent">
                 <div className="AqiCard">
-                    <p style={{ color: "#aaa", marginBottom: "12px" }}>Air Quality</p>
+                    <p style={{ color: "#aaa", marginBottom: "7px" }}>Air Quality</p>
                     <div className="flex">
                         <div className="AqiCircle" style={{ backgroundColor: current.color }}>
                             <span className="AqiDigit">{aqiValue}</span>

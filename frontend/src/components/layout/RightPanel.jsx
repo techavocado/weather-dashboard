@@ -17,7 +17,7 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
-export default function RightPanel({ weather, forecast }) {
+export default function RightPanel({ weather, forecast, uvValue, city }) {
   // console.log(weather);
 
   const windData = forecast?.slice(0, 20).map((item) =>
@@ -34,22 +34,25 @@ export default function RightPanel({ weather, forecast }) {
 
   return (
     <div style={{ width: "70%", padding: "20px", background: "#111" }}>
-      <WeeklyForecast />
+      <WeeklyForecast forecast={forecast} city={city}/>
 
       <h2 style={{ color: "white" }}>Today’s Overview</h2>
 
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "20px",
+          gridTemplateColumns: "repeat(3, 325px)",
+
+          gap: "15px",
           marginTop: "20px",
+          columnGap: "0px",
+          alignItems: "stretch",
         }}
       >
         {weather && (
           <>
             <WindCard windData={windData} windLabels={windLabels} forecast={forecast} />
-            <UVCard/>
+            <UVCard uvValue ={uvValue}/>
             <StatCard sunrise={weather?.sunrise} sunset={weather?.sunset} />
             <HumidityCard
               value={weather?.humidity}
@@ -64,7 +67,7 @@ export default function RightPanel({ weather, forecast }) {
           </>
         )}
       </div>
-        <CurrAqiCard />
+        <CurrAqiCard city = {city} />
     </div>
   );
 }

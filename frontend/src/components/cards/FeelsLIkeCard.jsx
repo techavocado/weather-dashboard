@@ -20,7 +20,7 @@ export default function FeelsLikeCard({ temp, feelsLike }) {
   if (diff < -2) message = "Wind is making it feel cooler";
 
   return (
-    <div className="card" style={{ width: "250px" }}>
+    <div className="card" style={{ width: "280px" }}>
       <p style={{ color: "#aaa", marginBottom: "12px" }}>
         Feels Like
       </p>

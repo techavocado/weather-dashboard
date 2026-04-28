@@ -33,12 +33,12 @@ export default function WindCard({ windData, windLabels, forecast }) {
 
 
   return (
-    <div style={{ width: "250px" }} className="card">
+    <div style={{ width: "280px",height:"210px"}} className="card">
       {/* Title */}
       <p style={{ marginBottom: "10px" }}>Wind Status</p>
 
       {/* Chart */}
-      <div style={{ height: "160px" }}>
+      <div style={{ height: "130px" }}>
         <Bar
           data={{
             labels: windLabels,
@@ -97,7 +97,7 @@ export default function WindCard({ windData, windLabels, forecast }) {
       }}>
         {/* Speed */}
         <div style={{
-          fontSize: "16px",
+          fontSize: "14px",
           fontWeight: "600",
           color: "white"
         }}>

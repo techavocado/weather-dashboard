@@ -10,7 +10,7 @@ export default function HumidityCard({ value = 0, temp = 0 }) {
   );
 
   return (
-    <div className="card" style={{ width: "250px" }}>
+    <div className="card" style={{ width: "280px" }}>
 
       {/* Title */}
       <p style={{ color: "#aaa", marginBottom: "12px" }}>

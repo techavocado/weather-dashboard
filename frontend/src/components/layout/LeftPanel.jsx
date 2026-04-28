@@ -8,8 +8,8 @@ import {
     CategoryScale,
     LinearScale,
     PointElement,
-    Tooltip,        // 🔥 ADD THIS
-      Filler,        // 🔥 IMPORTANT
+    Tooltip,        
+      Filler,       
 
 } from "chart.js";
 
@@ -17,7 +17,7 @@ import { Line } from "react-chartjs-2";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip,  Filler,);
 
-export default function LeftPanel({ weather, forecast }) {
+export default function LeftPanel({ weather, forecast,onSearchCity }) {
 
     const labels = forecast?.slice(0, 13).map((item) => {
         const date = new Date(item.dt_txt);
@@ -85,7 +85,7 @@ export default function LeftPanel({ weather, forecast }) {
         }}>
             <MainWeatherCard weather={weather} />
             <TemperatureCard labels={labels} temps={temps} options={options} />
-            <ImageCard />
+            <ImageCard onSearch={onSearchCity}/>
         </div>
     );
 }

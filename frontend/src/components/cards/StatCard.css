@@ -1,10 +1,12 @@
 .card {
   background: #1e1e1e;
-  padding: 20px;
+  padding-top: 2px !important;
+  padding: 14px;
   border-radius: 16px;
   color: white;
-  width: 180px;
-  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card:hover {
@@ -12,9 +14,8 @@
 }
 
 .card-title {
-  font-size: 14px;
-  opacity: 0.6;
-  margin-bottom: 10px;
+  font-size: 13px;
+  margin-bottom: 6px;   /* 🔥 pehle zyada tha */
 }
 
 .card-value {

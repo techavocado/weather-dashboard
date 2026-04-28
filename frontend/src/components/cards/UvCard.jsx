@@ -1,40 +1,22 @@
 import { useEffect, useState } from "react";
 
-export default function UVCard() {
-    const [uvValue, setUvValue] = useState(null);
-
-    useEffect(() => {
-        fetch("http://localhost:8000/api/uvindex?city=Ahmedabad")
-            .then((res) => res.json())
-            .then((data) => {
-                // console.log(data);
-                setUvValue(data);
-            })
-            .catch((err) => console.error("Error fetching UV data:", err));
-    }, []);
-
+export default function UVCard({uvValue}) {
+    
 
     function getCurrentUV() {
         const uvArray = uvValue?.hourly?.uv_index;
-        
-        if (!uvArray) return "Loading...";
+        if (!uvArray) return 0; 
 
-        // Get current hour (0-23)
         const hour = new Date().getHours();
-
-        // Get value from array
-        const currentUV = uvArray[hour];
-
-        return currentUV;
+        return uvArray[hour] || 0;
     }
 
     const value = getCurrentUV();
-
     const safeValue = Math.min(Math.max(value, 0), 12);
     const percent = (safeValue / 12) * 100;
 
     return (
-        <div className="card" style={{ width: "250px" }}>
+        <div className="card" style={{ width: "280px",height: "210px" }}>
 
             <p style={{ color: "#aaa", marginBottom: "10px" }}>
                 UV Index
@@ -49,8 +31,8 @@ export default function UVCard() {
             }}>
                 {/* OUTER RING */}
                 <div style={{
-                    width: "150px",
-                    height: "150px",
+                    width: "140px",
+                    height: "140px",
                     borderRadius: "50%",
                     background: `conic-gradient(
                     orange ${percent}%,

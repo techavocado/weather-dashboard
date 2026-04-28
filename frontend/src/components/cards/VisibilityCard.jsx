@@ -1,12 +1,9 @@
 export default function VisibilityCard({ value = 0 }) {
 
-    // API visibility meters me deta hai → km me convert
     const km = Math.round((Number(value) || 0) / 1000);
 
-    // max 10km consider (UI scaling ke liye)
     const progress = Math.min((km / 10) * 100, 100);
 
-    // dynamic message
     const message =
         km < 3
             ? "Low visibility"
@@ -15,7 +12,7 @@ export default function VisibilityCard({ value = 0 }) {
                 : "Clear visibility";
 
     return (
-        <div className="card" style={{ width: "250px" }}>
+        <div className="card" style={{ width: "280px" }}>
 
             {/* Title */}
             <p style={{ color: "#aaa", marginBottom: "12px" }}>
