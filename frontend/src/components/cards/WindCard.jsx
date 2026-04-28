@@ -1,8 +1,7 @@
 import "./StatCard.css";
 import { Bar } from "react-chartjs-2";
 
-export default function WindCard({ windData, windLabels, forecast }) {
-
+export default function WindCard({ windData, windLabels, forecast , onOpenOverlay}) {
 
   // to the the current time and closest wind speed
 
@@ -14,7 +13,6 @@ export default function WindCard({ windData, windLabels, forecast }) {
 
   forecast?.forEach((item) => {
     const itemTime = new Date(item.dt_txt);
-
     if (
       Math.abs(itemTime - now) <
       Math.abs(new Date(closestItem.dt_txt) - now)
@@ -33,7 +31,7 @@ export default function WindCard({ windData, windLabels, forecast }) {
 
 
   return (
-    <div style={{ width: "280px",height:"210px"}} className="card">
+    <div onClick={() => onOpenOverlay?.()} style={{ width: "280px",height:"210px" , cursor: "pointer", transition: "transform 0.2s ease"}} className="card">
       {/* Title */}
       <p style={{ marginBottom: "10px" }}>Wind Status</p>
 

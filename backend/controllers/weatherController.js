@@ -91,3 +91,16 @@ export const fetchDailyTemperature = async (req,res) => {
     res.status(500).json({ error: "Failed to fetch Daily Temperature" });
   }
 }
+
+export const fetchHourlyTempAndWind = async (req,res) => {
+  try {
+    const city = req.query.city || "Ahmedabad";
+
+    const data = await getHourlyTempAndWind(city);
+
+    res.json(data);
+  } catch (error) {
+    console.log("FORECAST ERROR:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to fetch Hourly Temp and Wind" });
+  }
+}

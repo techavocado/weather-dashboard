@@ -8,16 +8,16 @@ import {
     CategoryScale,
     LinearScale,
     PointElement,
-    Tooltip,        
-      Filler,       
+    Tooltip,
+    Filler,
 
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip,  Filler,);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Filler,);
 
-export default function LeftPanel({ weather, forecast,onSearchCity }) {
+export default function LeftPanel({ weather, forecast, onSearchCity, error , onOpenOverlay  }) {
 
     const labels = forecast?.slice(0, 13).map((item) => {
         const date = new Date(item.dt_txt);
@@ -26,7 +26,7 @@ export default function LeftPanel({ weather, forecast,onSearchCity }) {
             hour12: true,
         });
     });
-    
+
     const temps = forecast?.slice(0, 13).map((item) =>
         Math.round(item.main.temp)
     );
@@ -84,8 +84,8 @@ export default function LeftPanel({ weather, forecast,onSearchCity }) {
             height: "100vh"
         }}>
             <MainWeatherCard weather={weather} />
-            <TemperatureCard labels={labels} temps={temps} options={options} />
-            <ImageCard onSearch={onSearchCity}/>
+            <TemperatureCard labels={labels} temps={temps} options={options} onOpenOverlay={onOpenOverlay} />
+            <ImageCard onSearch={onSearchCity} error={error} />
         </div>
     );
 }

@@ -1,16 +1,19 @@
 import { Line } from "react-chartjs-2";
 
-export default function TemperatureCard({ labels, temps, options }) {
+export default function TemperatureCard({ labels, temps, options , onOpenOverlay}) {
 
   const dayParts = ["Morning", "Afternoon", "Evening", "Night"];
   const dayTemps = temps?.slice(0, 4) || [];
 
   return (
-    <div style={{
+    
+    <div  onClick={() => onOpenOverlay?.()}  style={{
       background: "#1e1e1e",
       padding: "20px",
       borderRadius: "16px",
-      color: "white"
+      color: "white",
+      cursor: "pointer",
+      transition: "transform 0.2s ease",
     }}>
       <p>Temperature</p>
       <div style={{

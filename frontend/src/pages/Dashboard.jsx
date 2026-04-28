@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import LeftPanel from "../components/layout/LeftPanel";
 import RightPanel from "../components/layout/RightPanel";
+import BlankOverlay from "../components/overlay/BlankOverlay";
 
 export default function Dashboard() {
   const [city, setCity] = useState("Ahmedabad");
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [uvValue, setUvValue] = useState(null);
+  const [error, setError] = useState(false);
+  const [overlay, setOverlay] = useState(false);
 
   useEffect(() => {
     if (!city) return;
 
     const fetchAllData = async () => {
       try {
+        setError(false);
         const [weatherRes, forecastRes, uvRes] = await Promise.all([
           fetch(`http://localhost:8000/api/weather?city=${city}`),
           fetch(`http://localhost:8000/api/forecast?city=${city}`),
@@ -21,8 +25,9 @@ export default function Dashboard() {
 
         // Agar backend 500 error de raha hai toh yahan handle hoga
         if (!weatherRes.ok || !forecastRes.ok || !uvRes.ok) {
-           console.error("Backend failed for some city");
-           return;
+          setError(true);
+          console.error("Backend failed for some city");
+          return;
         }
 
         const weatherData = await weatherRes.json();
@@ -49,8 +54,9 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      <LeftPanel weather={weather} forecast={forecast} onSearchCity={handleCitySearch} />
-      <RightPanel weather={weather} forecast={forecast} uvValue={uvValue} city={city} />
+      <LeftPanel weather={weather} forecast={forecast} onSearchCity={handleCitySearch} error={error} onOpenOverlay={() => setOverlay(true)}  />
+      <RightPanel weather={weather} forecast={forecast} uvValue={uvValue} city={city} onOpenOverlay={() => setOverlay(true)} />
+       {overlay && ( <BlankOverlay onClose={() => setOverlay(false)} />)}
     </div>
   );
 }

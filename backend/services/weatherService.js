@@ -27,7 +27,7 @@ const geocoding = async (city) => {
   
   try {
     const res = await axios.get(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
+      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${API_KEY}`
     );
   
     if (res.data && res.data.length > 0) {
@@ -69,7 +69,6 @@ export const getHourlyUVIndex = async (city) => {
   const res = await axios.get(
     `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=uv_index&timezone=auto&past_days=0&forecast_days=1`
   );
-  // console.log(res.data);
   return res.data;
 }
 
@@ -79,6 +78,16 @@ export const getDailyTemperature = async (city) => {
   const res = await axios.get(
     `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max&timezone=auto&past_days=0&forecast_days=7`
   );
-  console.log(res.data);
+  return res.data;
+}
+
+export const getHourlyTempAndWind = async (city) => {
+  const coords = await geocoding(city); 
+
+  const date = new Date().toISOString().split('T')[0];
+
+  const res = await axios.get(
+    `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=temperature_2m,wind_speed_10m&timezone=auto&start_date=${date}&end_date=${date}`
+  );
   return res.data;
 }

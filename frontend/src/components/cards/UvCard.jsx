@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function UVCard({uvValue}) {
+export default function UVCard({uvValue , onOpenOverlay }) {
     
 
     function getCurrentUV() {
@@ -16,7 +16,7 @@ export default function UVCard({uvValue}) {
     const percent = (safeValue / 12) * 100;
 
     return (
-        <div className="card" style={{ width: "280px",height: "210px" }}>
+        <div onClick={() => onOpenOverlay?.()} className="card" style={{ width: "280px",height: "210px" , cursor: "pointer", transition: "transform 0.2s ease" }}>
 
             <p style={{ color: "#aaa", marginBottom: "10px" }}>
                 UV Index

@@ -1,5 +1,5 @@
 import express from "express";
-import { fetchWeather,fetchForecast, fetchCurrAqi, fetchHourlyUVIndex, fetchDailyTemperature } from "../controllers/weatherController.js";
+import { fetchWeather,fetchForecast, fetchCurrAqi, fetchHourlyUVIndex, fetchDailyTemperature, fetchHourlyTempAndWind } from "../controllers/weatherController.js";
 
 const router = express.Router();
 
@@ -8,5 +8,6 @@ router.get("/forecast", fetchForecast);
 router.get("/curraqi", fetchCurrAqi);
 router.get("/uvindex",fetchHourlyUVIndex);
 router.get("/dailytemp", fetchDailyTemperature);
+router.get("/hourlydata" ,fetchHourlyTempAndWind);
 
 export default router;
