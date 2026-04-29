@@ -425,8 +425,8 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           fill: true,
           pointBackgroundColor: "#1e1e1e",
           pointBorderColor: "#c084fc",
-          pointRadius: 0,
-          pointHoverRadius: 6,
+          pointRadius: 5,
+          pointHoverRadius: 8,
           backgroundColor: (context) => {
             const chart = context.chart;
             const { ctx, chartArea } = chart;
@@ -447,6 +447,12 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           tooltip: {
             backgroundColor: "#333",
             titleColor: "#fff",
+            titleFont: {
+              size : 25
+            },
+            bodyFont: {
+                size: 16 
+            },
             bodyColor: "#c084fc",
             displayColors: false,
             callbacks: { label: (context) => `${context.parsed.y}°C` }

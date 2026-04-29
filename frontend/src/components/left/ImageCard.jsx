@@ -42,7 +42,7 @@ export default function ImageCard({ onSearch, error }) {
         borderRadius: "16px",
         overflow: "hidden",
         padding: "20px",
-        height: "130px"
+        height: "122px"
       }}
     >
       <div className="search-section" style={{ margin: 0, maxWidth: "100%" }}>

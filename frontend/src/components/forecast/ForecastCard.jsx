@@ -456,12 +456,12 @@ export default function ForecastCard({ day, temp, onOpenOverlay, date }) {
         cursor: "pointer" /* Clickable look */
       }}
       onClick={() =>
-  onOpenOverlay("forecast", {
-    day,
-    temp,
-    date
-  })
-}
+        onOpenOverlay("forecast", {
+          day,
+          temp,
+          date
+        })
+      }
     >
       <p style={{ fontSize: "18px", opacity: 0.6 }}>{day}</p>
       <div style={{ margin: "10px 0" }}>

@@ -79,7 +79,7 @@ export default function LeftPanel({ weather, forecast, onSearchCity, error , onO
             padding: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: "20px",
+            gap: "15px",
             background: "#111",
             height: "100vh"
         }}>

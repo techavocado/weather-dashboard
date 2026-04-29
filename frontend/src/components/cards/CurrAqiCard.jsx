@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
-import "./CurrAqiCard.css";
-import AqiComponents from "./AqiComponents";
+import React, { useEffect, useState } from "react";
+
+// --- Internal Component: AqiComponents ---
+// Isse alag file ki zaroorat nahi padegi aur error fix ho jayega
+const AqiComponents = ({ name, value }) => (
+    <div style={styles.metricItem}>
+        <span style={styles.metricName}>{name}</span>
+        <span style={styles.metricValue}>{value ?? "--"}</span>
+    </div>
+);
 
 export default function CurrAqiCard({ city, onOpenOverlay }) {
     const [currAqi, setCurrAqi] = useState(null);
@@ -11,15 +18,10 @@ export default function CurrAqiCard({ city, onOpenOverlay }) {
         const getWeatherData = async () => {
             try {
                 const res = await fetch(`http://localhost:8000/api/curraqi?city=${city}`);
-
                 if (!res.ok) return;
-
                 const data = await res.json();
-
                 if (!data?.list?.length) return;
-
                 setCurrAqi(data);
-
             } catch (err) {
                 console.error("AQI fetch failed:", err);
             }
@@ -43,33 +45,116 @@ export default function CurrAqiCard({ city, onOpenOverlay }) {
 
     return (
         <div 
-            className="card" 
-            style={{ marginTop: "12px", width: "95.5%", height: "90px", cursor: "pointer" }}
+            style={styles.aqiCardContainer} 
             onClick={() => onOpenOverlay && onOpenOverlay('aqi')}
         >
-            <div className="AqiContent">
-                <div className="AqiCard">
-                    <p style={{ color: "#aaa", marginBottom: "7px" }}>Air Quality</p>
-
-                    <div className="flex">
+            <div style={styles.aqiContent}>
+                {/* Left Side: Main AQI Status */}
+                <div style={styles.aqiStatus}>
+                    <p style={styles.aqiTitle}>Air Quality</p>
+                    <div style={styles.flexRow}>
                         <div
-                            className="AqiCircle"
-                            style={{ backgroundColor: current.color }}
+                            style={{ ...styles.aqiCircle, backgroundColor: current.color }}
                         >
-                            <span className="AqiDigit">
+                            <span style={styles.aqiDigit}>
                                 {aqiValue ?? "--"}
                             </span>
                         </div>
-
-                        <p className="AqiLabel">{current.label}</p>
+                        <p style={{ ...styles.aqiLabel, color: current.color }}>{current.label}</p>
                     </div>
                 </div>
 
-                <AqiComponents name="PM2.5" value={components?.pm2_5} />
-                <AqiComponents name="PM10" value={components?.pm10} />
-                <AqiComponents name="O3" value={components?.o3} />
-                <AqiComponents name="NO2" value={components?.no2} />
+                {/* Right Side: Pollutants (Distributed position) */}
+                <div style={styles.aqiMetrics}>
+                    <AqiComponents name="PM2.5" value={components?.pm2_5} />
+                    <AqiComponents name="PM10" value={components?.pm10} />
+                    <AqiComponents name="O3" value={components?.o3} />
+                    <AqiComponents name="NO2" value={components?.no2} />
+                </div>
             </div>
         </div>
     );
 }
+
+// --- Internal Styling: Fixing Layout and Space Issues ---
+const styles = {
+    aqiCardContainer: {
+        background: "#1e1e1e",
+        borderRadius: "16px",
+        marginTop: "12px",
+        width: "98.5%", 
+        height: "100px", // Reverted to original compact height
+        cursor: "pointer",
+        padding: "0 20px",
+        boxSizing: "border-box",
+        display: "flex",
+        alignItems: "center",
+        transition: "background 0.2s ease",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.3)"
+    },
+    aqiContent: {
+        display: "flex",
+        justifyContent: "space-between", 
+        alignItems: "center",
+        width: "100%"
+    },
+    aqiStatus: {
+        display: "flex",
+        flexDirection: "column",
+        minWidth: "140px"
+    },
+    aqiTitle: {
+        color: "#98989d",
+        fontSize: "13px",
+        margin: "0 0 4px 0"
+    },
+    flexRow: {
+        display: "flex",
+        alignItems: "center",
+        gap: "12px"
+    },
+    aqiCircle: {
+        width: "32px",
+        height: "32px",
+        borderRadius: "50%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#000"
+    },
+    aqiDigit: {
+        fontWeight: "bold",
+        fontSize: "16px"
+    },
+    aqiLabel: {
+        margin: 0,
+        fontWeight: "600",
+        fontSize: "17px"
+    },
+    aqiMetrics: {
+        display: "flex",
+        flex: 1,
+        justifyContent: "space-around", 
+        paddingLeft: "20px"
+    },
+    metricItem: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#252525", 
+        borderRadius: "12px", 
+        padding: "8px 15px", // Compact padding to fit in 90px card
+        minWidth: "70px" 
+    },
+    metricName: {
+        color: "#98989d",
+        fontSize: "11px",
+        fontWeight: "500",
+        marginBottom: "2px"
+    },
+    metricValue: {
+        color: "#fff",
+        fontSize: "15px", // Still slightly larger and bold
+        fontWeight: "bold"
+    }
+};
