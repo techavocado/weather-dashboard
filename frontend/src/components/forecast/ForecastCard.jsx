@@ -254,7 +254,7 @@ export const TemperatureIcon = ({ temp }) => {
 };
 
 
-export default function ForecastCard({ day, temp }) {
+export default function ForecastCard({ day, temp, onOpenOverlay,date }) {
 
   const getIcon = (t) => {
     if (t === undefined || t === null) return null;
@@ -443,16 +443,26 @@ export default function ForecastCard({ day, temp }) {
   };
 
   return (
-    <div style={{
-      background: "#1e1e1e",
-      padding: "15px",
-      paddingTop: "0px",
-      paddingBottom: "0px",
-      borderRadius: "12px",
-      color: "white",
-      textAlign: "center",
-      width: "94px"
-    }}>
+    <div
+      style={{
+        background: "#1e1e1e",
+        padding: "15px",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+        borderRadius: "12px",
+        color: "white",
+        textAlign: "center",
+        width: "94px",
+        cursor: "pointer" /* Clickable look */
+      }}
+      onClick={() =>
+  onOpenOverlay("forecast", {
+    day,
+    temp,
+    date
+  })
+}
+    >
       <p style={{ fontSize: "18px", opacity: 0.6 }}>{day}</p>
       <div style={{ margin: "10px 0" }}>
         {getIcon(temp)}

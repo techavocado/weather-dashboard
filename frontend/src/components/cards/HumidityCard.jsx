@@ -1,4 +1,4 @@
-export default function HumidityCard({ value = 0, temp = 0 }) {
+export default function HumidityCard({ value = 0, temp = 0, onOpenOverlay }) {
 
   // safe values
   const safeValue = Math.min(Math.max(Number(value) || 0, 0), 100);

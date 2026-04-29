@@ -1,7 +1,7 @@
 import "./StatCard.css";
 import { Bar } from "react-chartjs-2";
 
-export default function WindCard({ windData, windLabels, forecast , onOpenOverlay}) {
+export default function WindCard({ windData, windLabels, forecast, onOpenOverlay }) {
 
   // to the the current time and closest wind speed
 
@@ -24,15 +24,15 @@ export default function WindCard({ windData, windLabels, forecast , onOpenOverla
   const currentSpeed = Math.round(closestItem.wind.speed * 3.6);
 
   const currentTime = new Date().toLocaleTimeString([], {
-  hour: "numeric",
-  minute: "2-digit",
-  hour12: true,
-});
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 
 
   return (
-    <div onClick={() => onOpenOverlay?.()} style={{ width: "280px",height:"210px" , cursor: "pointer", transition: "transform 0.2s ease"}} className="card">
-      {/* Title */}
+    // Yahan 'wind' likhna zaroori hai
+    <div onClick={() => onOpenOverlay?.('wind')} style={{ width: "280px", height: "210px", cursor: "pointer", transition: "transform 0.2s ease" }} className="card">      {/* Title */}
       <p style={{ marginBottom: "10px" }}>Wind Status</p>
 
       {/* Chart */}
@@ -45,9 +45,9 @@ export default function WindCard({ windData, windLabels, forecast , onOpenOverla
                 data: windData,
                 backgroundColor: "#0ea5e9",
                 borderRadius: 2,
-                barThickness: 12,        // slim bars
+                barThickness: 12,
                 categoryPercentage: 1.0,
-                barPercentage: 1.0,           // slim bars (important)
+                barPercentage: 1.0,
               },
             ],
           }}
@@ -65,7 +65,7 @@ export default function WindCard({ windData, windLabels, forecast , onOpenOverla
                 ticks: {
                   color: "#aaa",
                   font: { size: 10 },
-                  maxRotation: 0,   // 🔥 yaha hona chahiye
+                  maxRotation: 0,
                   minRotation: 0,
                   autoSkip: true,
 
@@ -74,7 +74,7 @@ export default function WindCard({ windData, windLabels, forecast , onOpenOverla
               y: {
                 grid: { display: false },
                 ticks: {
-                  autoSkip: false,        // 🔥 IMPORTANT
+                  autoSkip: false,
 
                   color: "#aaa",
                   font: { size: 10 },

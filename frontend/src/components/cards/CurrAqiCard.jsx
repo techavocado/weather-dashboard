@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./CurrAqiCard.css";
 import AqiComponents from "./AqiComponents";
 
-export default function CurrAqiCard({ city }) {
+export default function CurrAqiCard({ city, onOpenOverlay }) {
     const [currAqi, setCurrAqi] = useState(null);
 
     useEffect(() => {
@@ -42,7 +42,11 @@ export default function CurrAqiCard({ city }) {
     const current = aqiLevels[aqiValue] ?? { label: "N/A", color: "#ccc" };
 
     return (
-        <div className="card" style={{ marginTop: "12px", width: "95.5%", height: "90px" }}>
+        <div 
+            className="card" 
+            style={{ marginTop: "12px", width: "95.5%", height: "90px", cursor: "pointer" }}
+            onClick={() => onOpenOverlay && onOpenOverlay('aqi')}
+        >
             <div className="AqiContent">
                 <div className="AqiCard">
                     <p style={{ color: "#aaa", marginBottom: "7px" }}>Air Quality</p>

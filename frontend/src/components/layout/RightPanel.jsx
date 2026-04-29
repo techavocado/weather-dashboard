@@ -67,7 +67,7 @@ export default function RightPanel({ weather, forecast, uvValue, city , onOpenOv
           </>
         )}
       </div>
-        <CurrAqiCard city = {city} />
+        <CurrAqiCard city = {city} onOpenOverlay={onOpenOverlay} />
     </div>
   );
 }

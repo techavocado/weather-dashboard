@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function UVCard({uvValue , onOpenOverlay }) {
-    
+export default function UVCard({ uvValue, onOpenOverlay }) {
+
 
     function getCurrentUV() {
         const uvArray = uvValue?.hourly?.uv_index;
-        if (!uvArray) return 0; 
+        if (!uvArray) return 0;
 
         const hour = new Date().getHours();
         return uvArray[hour] || 0;
@@ -16,8 +16,7 @@ export default function UVCard({uvValue , onOpenOverlay }) {
     const percent = (safeValue / 12) * 100;
 
     return (
-        <div onClick={() => onOpenOverlay?.()} className="card" style={{ width: "280px",height: "210px" , cursor: "pointer", transition: "transform 0.2s ease" }}>
-
+        <div onClick={() => onOpenOverlay?.('uv')} className="card" style={{ width: "280px", height: "210px", cursor: "pointer", transition: "transform 0.2s ease" }}>
             <p style={{ color: "#aaa", marginBottom: "10px" }}>
                 UV Index
             </p>

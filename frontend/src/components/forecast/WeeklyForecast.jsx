@@ -41,7 +41,6 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
         return (
           <div
             key={dateString}
-            onClick={() => onOpenOverlay?.()}   
             style={{
               cursor: "pointer",
               transition: "transform 0.2s ease"
@@ -53,6 +52,8 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
               day={dayName}
               temp={temperatures?.[index] ?? "--"}
               city={city}
+              onOpenOverlay={onOpenOverlay}
+              date={dateString}
             />
           </div>
         );

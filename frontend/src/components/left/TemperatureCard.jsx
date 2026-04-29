@@ -7,7 +7,7 @@ export default function TemperatureCard({ labels, temps, options , onOpenOverlay
 
   return (
     
-    <div  onClick={() => onOpenOverlay?.()}  style={{
+    <div  onClick={() => onOpenOverlay?.('temp')}  style={{
       background: "#1e1e1e",
       padding: "20px",
       borderRadius: "16px",
