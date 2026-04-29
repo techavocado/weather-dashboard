@@ -143,14 +143,16 @@ const styles = {
         alignItems: "center",
         backgroundColor: "#252525", 
         borderRadius: "12px", 
-        padding: "8px 15px", // Compact padding to fit in 90px card
-        minWidth: "70px" 
+        padding: "15px", // Compact padding to fit in 90px card
+        paddingBottom : "5px",
+        minWidth: "70px",
+        height: "50px"
     },
     metricName: {
         color: "#98989d",
-        fontSize: "11px",
+        fontSize: "15px",
         fontWeight: "500",
-        marginBottom: "2px"
+        marginBottom: "5px",
     },
     metricValue: {
         color: "#fff",
