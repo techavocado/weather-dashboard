@@ -81,13 +81,13 @@ export const getDailyTemperature = async (city) => {
   return res.data;
 }
 
-export const getHourlyTempAndWind = async (city) => {
+export const getHourlyTemp = async (city,date) => {
   const coords = await geocoding(city); 
 
-  const date = new Date().toISOString().split('T')[0];
+  const date1 = new Date(date).toISOString().split('T')[0];
 
   const res = await axios.get(
-    `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=temperature_2m,wind_speed_10m&timezone=auto&start_date=${date}&end_date=${date}`
+    `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=temperature_2m&timezone=auto&start_date=${date1}&end_date=${date1}`
   );
   return res.data;
 }

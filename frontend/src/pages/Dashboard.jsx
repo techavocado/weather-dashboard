@@ -14,6 +14,12 @@ export default function Dashboard() {
   // const [overlay, setOverlay] = useState(false);
 
   const [activeModal, setActiveModal] = useState(null);
+  const [modalData, setModalData] = useState(null);
+
+  const handleOpenModal = (type, specificData = null) => {
+    setActiveModal(type);
+    setModalData(specificData);
+  };
 
   useEffect(() => {
     if (!city) return;
@@ -61,20 +67,23 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      <LeftPanel weather={weather} forecast={forecast} onSearchCity={handleCitySearch} error={error} onOpenOverlay={(type) => setActiveModal(type)} />
-      <RightPanel weather={weather} forecast={forecast} uvValue={uvValue} city={city} onOpenOverlay={(type) => setActiveModal(type)} />
+      <LeftPanel weather={weather} forecast={forecast} onSearchCity={handleCitySearch} error={error} onOpenOverlay={handleOpenModal} />
+      <RightPanel weather={weather} forecast={forecast} uvValue={uvValue} city={city} onOpenOverlay={handleOpenModal} />
       {activeModal && (
         <BlankOverlay
           type={activeModal}
           city={city}
           data={
-            activeModal === 'uv' ? uvValue :
-              activeModal === 'aqi' ? currAqi :
-                (activeModal === 'temp' || activeModal === 'wind' || activeModal === 'forecast') ? forecast :
-                  weather
+            activeModal === 'forecast' ? modalData : // Use the clicked card's data here!
+              activeModal === 'uv' ? uvValue :
+                activeModal === 'aqi' ? currAqi :
+                  (activeModal === 'temp' || activeModal === 'wind') ? forecast :
+                    weather
           }
-          // 4. Sirf setActiveModal(null) karna kaafi hai
-          onClose={() => setActiveModal(null)}
+          onClose={() => {
+            setActiveModal(null);
+            setModalData(null); // Clear data on close
+          }}
         />
       )}
     </div>

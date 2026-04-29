@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LogarithmicScale, 
+  LogarithmicScale,
   PointElement,
   LineElement,
   BarElement,
@@ -27,6 +27,10 @@ ChartJS.register(
 );
 
 export default function BlankOverlay({ onClose, type, data, city }) {
+  // 1. ADDED HOOKS HERE (At the very top level, outside renderContent)
+  const [hourlyData, setHourlyData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   // Background scroll disable
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -34,6 +38,26 @@ export default function BlankOverlay({ onClose, type, data, city }) {
       document.body.style.overflow = "auto";
     };
   }, []);
+ console.log(data?.date);
+  // 2. ADDED FETCH EFFECT HERE (Runs only when type is forecast)
+  useEffect(() => {
+    if (type === "forecast" && city && data?.date) {
+      const fetchHourly = async () => {
+        setIsLoading(true);
+        try {
+          const res = await fetch(`http://localhost:8000/api/hourlydata?city=${city}&date=${data?.date}`);
+          if (res.ok) {
+            const fetchedData = await res.json();
+            setHourlyData(fetchedData);
+          }
+        } catch (error) {
+          console.error("Failed to fetch hourly forecast:", error);
+        }
+        setIsLoading(false);
+      };
+      fetchHourly();
+    }
+  }, [type, city, data]);
 
   // Helper function: Wind Direction
   const getWindDirection = (degree) => {
@@ -52,7 +76,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
 
   // Helper function: AQI Status (1 to 5)
   const getAqiStatus = (index) => {
-    switch(index) {
+    switch (index) {
       case 1: return { text: "Good", color: "#00e400" }; // Green
       case 2: return { text: "Fair", color: "#ffff00" }; // Yellow
       case 3: return { text: "Moderate", color: "#ff7e00" }; // Orange
@@ -73,12 +97,12 @@ export default function BlankOverlay({ onClose, type, data, city }) {
     // ==========================================
     if (type === "temp") {
       const next24Hours = data.slice(0, 9);
-      
+
       const labels = next24Hours.map(item => {
         const d = new Date(item.dt_txt);
         return d.toLocaleTimeString([], { hour: "numeric", hour12: true });
       });
-      
+
       const temps = next24Hours.map(item => Math.round(item.main.temp));
 
       const chartData = {
@@ -196,7 +220,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
                 <div key={i} style={tableRow}>
                   <span style={{ color: "#aaa", width: "70px" }}>{labels[i]}</span>
                   <span style={{ color: "#888", fontSize: "12px", flex: 1, textAlign: "center" }}>Dir: {getWindDirection(item.wind.deg)}</span>
-                  <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{Math.round(item.wind.speed * 3.6)} <span style={{fontSize: "12px", color: "#0ea5e9"}}>km/h</span></span>
+                  <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{Math.round(item.wind.speed * 3.6)} <span style={{ fontSize: "12px", color: "#0ea5e9" }}>km/h</span></span>
                 </div>
               ))}
             </div>
@@ -266,7 +290,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
                   <div key={i} style={tableRow}>
                     <span style={{ color: "#aaa", width: "70px" }}>{labels[i]}</span>
                     <span style={{ color: severity.color, fontSize: "14px", flex: 1, textAlign: "center", fontWeight: "500" }}>{severity.text}</span>
-                    <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{val} <span style={{fontSize: "12px", color: "#888"}}>UV</span></span>
+                    <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{val} <span style={{ fontSize: "12px", color: "#888" }}>UV</span></span>
                   </div>
                 );
               })}
@@ -280,14 +304,14 @@ export default function BlankOverlay({ onClose, type, data, city }) {
     // 4. AQI (AIR QUALITY) OVERLAY LOGIC
     // ==========================================
     if (type === "aqi") {
-      const aqiData = data?.list?.[0]; 
-      
+      const aqiData = data?.list?.[0];
+
       if (!aqiData) {
         return <div style={{ color: "#aaa", textAlign: "center", marginTop: "100px" }}>AQI Data unavailable</div>;
       }
 
       const aqiIndex = aqiData.main.aqi;
-      const components = aqiData.components; // { co: 145.16, no: 0.34, no2: 1.87... }
+      const components = aqiData.components; 
       const aqiStatus = getAqiStatus(aqiIndex);
 
       const labels = Object.keys(components).map(k => k.toUpperCase().replace('_', '.'));
@@ -299,7 +323,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           {
             label: "Concentration (μg/m³)",
             data: values,
-            backgroundColor: "#10b981", // Emerald Green
+            backgroundColor: "#10b981", 
             borderRadius: 4,
             barThickness: 25,
           },
@@ -314,7 +338,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           tooltip: {
             backgroundColor: "rgba(25, 25, 25, 0.95)",
             titleColor: "#aaa",
-            bodyColor: "#10b981", 
+            bodyColor: "#10b981",
             bodyFont: { size: 18, weight: 'bold' },
             padding: 12,
             displayColors: false,
@@ -326,7 +350,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: "#aaa", font: { size: 10 } }, 
+            ticks: { color: "#aaa", font: { size: 10 } },
           },
           y: {
             grid: { color: "#333", borderDash: [5, 5] },
@@ -363,7 +387,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
                     {key.replace('_', '.')}
                   </span>
                   <span style={{ color: "white", fontWeight: "bold", fontSize: "14px" }}>
-                    {val} <span style={{fontSize: "11px", color: "#888", fontWeight: "normal"}}>μg/m³</span>
+                    {val} <span style={{ fontSize: "11px", color: "#888", fontWeight: "normal" }}>μg/m³</span>
                   </span>
                 </div>
               ))}
@@ -374,97 +398,95 @@ export default function BlankOverlay({ onClose, type, data, city }) {
     }
 
     // ==========================================
-    // 5. HUMIDITY OVERLAY LOGIC
+    // 5. FORECAST OVERLAY LOGIC (NEWLY ADDED)
     // ==========================================
-    if (type === "humidity") {
-      // Yahan hum forecast API data use kar rahe hain jo temp/wind me use kiya tha
-      const next24Hours = data.slice(0, 9);
-      
-      const labels = next24Hours.map(item => {
-        const d = new Date(item.dt_txt);
-        return d.toLocaleTimeString([], { hour: "numeric", hour12: true });
-      });
-      
-      const humidities = next24Hours.map(item => item.main.humidity);
+    if (type === "forecast") {
+      if (isLoading || !hourlyData?.hourly) {
+        return <div style={{ color: "#aaa", textAlign: "center", marginTop: "100px" }}>Loading hourly forecast...</div>;
+      }
+
+      const rawTimes = hourlyData.hourly.time || [];
+      const temps = hourlyData.hourly.temperature_2m || [];
+
+      const labels = rawTimes.map(t => new Date(t).toLocaleTimeString([], { hour: 'numeric', hour12: true }));
+
+      const maxTemp = Math.max(...temps);
+      const minTemp = Math.min(...temps);
+      const avgTemp = (temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1);
 
       const chartData = {
         labels: labels,
-        datasets: [
-          {
-            label: "Humidity (%)",
-            data: humidities,
-            borderColor: "#3b82f6", // Nice blue color for water/humidity
-            borderWidth: 3,
-            tension: 0.4, // smooth curves
-            fill: true,
-            pointBackgroundColor: "#1e1e1e",
-            pointBorderColor: "#3b82f6",
-            pointRadius: 4,
-            backgroundColor: (context) => {
-              const chart = context.chart;
-              const { ctx, chartArea } = chart;
-              if (!chartArea) return null;
-              const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-              gradient.addColorStop(0, "rgba(59, 130, 246, 0.5)"); // blue gradient
-              gradient.addColorStop(1, "rgba(59, 130, 246, 0)");
-              return gradient;
-            },
+        datasets: [{
+          label: "Temperature (°C)",
+          data: temps,
+          borderColor: "#c084fc", // Purple to distinguish from normal temp
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointBackgroundColor: "#1e1e1e",
+          pointBorderColor: "#c084fc",
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          backgroundColor: (context) => {
+            const chart = context.chart;
+            const { ctx, chartArea } = chart;
+            if (!chartArea) return null;
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, "rgba(192, 132, 252, 0.4)");
+            gradient.addColorStop(1, "rgba(192, 132, 252, 0)");
+            return gradient;
           },
-        ],
+        }],
       };
 
-      if (type === "forecast") {
-  if (!data) return null;
+      const chartOptionsForecast = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#333",
+            titleColor: "#fff",
+            bodyColor: "#c084fc",
+            displayColors: false,
+            callbacks: { label: (context) => `${context.parsed.y}°C` }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: "#aaa", maxTicksLimit: 8 } },
+          y: { grid: { color: "#333", borderDash: [5, 5] }, ticks: { color: "#aaa", callback: (val) => `${val}°` } },
+        },
+      };
 
-  return (
-    <div style={{ textAlign: "center", marginTop: "100px" }}>
-      <h2 style={{ fontSize: "28px" }}>{data.day}</h2>
-
-      <p style={{ color: "#aaa" }}>{data.date}</p>
-
-      <div style={{
-        fontSize: "60px",
-        fontWeight: "bold",
-        marginTop: "30px"
-      }}>
-        {data.temp}°
-      </div>
-
-      <p style={{ color: "#888" }}>
-        Temperature in {city}
-      </p>
-    </div>
-  );
-}
-
-      
       return (
         <div style={innerFlex}>
           <div style={graphSide}>
-            <h2 style={titleStyle}>Humidity Trend - {city}</h2>
-            <div style={chartBox}><Line data={chartData} options={chartOptionsHumidity} /></div>
+            <h2 style={titleStyle}>Hourly Forecast - {data.day}, {city}</h2>
+            <div style={chartBox}>
+              <Line data={chartData} options={chartOptionsForecast} /> 
+            </div>
           </div>
-          <div style={statsSide}>
-            <h3 style={subTitle}>Next 24 Hours</h3>
-            <div style={tableScroll}>
-              {next24Hours.map((item, i) => {
-                const hum = item.main.humidity;
-                const temp = item.main.temp;
-                // Dew point calculation (Approximate formula)
-                const dewPoint = Math.round(temp - ((100 - hum) / 5));
 
-                return (
-                  <div key={i} style={tableRow}>
-                    <span style={{ color: "#aaa", width: "70px" }}>{labels[i]}</span>
-                    <span style={{ color: "#888", fontSize: "12px", flex: 1, textAlign: "center" }}>
-                      Dew Pt: {dewPoint}°
-                    </span>
-                    <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>
-                      {hum} <span style={{fontSize: "12px", color: "#3b82f6"}}>%</span>
-                    </span>
-                  </div>
-                );
-              })}
+          <div style={statsSide}>
+            <div style={{ background: "#1e1e1e", padding: "15px", borderRadius: "12px", marginBottom: "20px", textAlign: "center", border: `1px solid #c084fc` }}>
+              <div style={{ fontSize: "12px", color: "#aaa", marginBottom: "5px" }}>Average Temp</div>
+              <div style={{ fontSize: "36px", fontWeight: "bold", color: "white" }}>{avgTemp}°</div>
+            </div>
+
+            <h3 style={subTitle}>Day Breakdown</h3>
+            <div style={tableScroll}>
+              <div style={tableRow}>
+                <span style={{ color: "#aaa", fontWeight: "500" }}>High</span>
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{maxTemp}°</span>
+              </div>
+              <div style={tableRow}>
+                <span style={{ color: "#aaa", fontWeight: "500" }}>Low</span>
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{minTemp}°</span>
+              </div>
+              <div style={tableRow}>
+                <span style={{ color: "#aaa", fontWeight: "500" }}>General</span>
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "16px" }}>{data.temp}°</span>
+              </div>
             </div>
           </div>
         </div>

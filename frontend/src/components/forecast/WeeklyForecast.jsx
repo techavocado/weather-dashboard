@@ -37,7 +37,7 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
         const dayName = new Date(dateString).toLocaleDateString("en-US", {
           weekday: "short",
         });
-
+        
         return (
           <div
             key={dateString}

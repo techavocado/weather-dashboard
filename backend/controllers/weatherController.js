@@ -1,4 +1,4 @@
-import { getWeatherByCity, getForecastByCity, getCurrentAqi , getHourlyUVIndex, getDailyTemperature } from "../services/weatherService.js";
+import { getWeatherByCity, getForecastByCity, getCurrentAqi , getHourlyUVIndex, getDailyTemperature ,getHourlyTemp } from "../services/weatherService.js";
 
 export const fetchWeather = async (req, res) => {
   try {
@@ -92,11 +92,12 @@ export const fetchDailyTemperature = async (req,res) => {
   }
 }
 
-export const fetchHourlyTempAndWind = async (req,res) => {
+export const fetchHourlyTemp = async (req,res) => {
   try {
     const city = req.query.city || "Ahmedabad";
+    const date = req.query.date || "2026-04-29";
 
-    const data = await getHourlyTempAndWind(city);
+    const data = await getHourlyTemp(city,date);
 
     res.json(data);
   } catch (error) {

@@ -254,7 +254,7 @@ export const TemperatureIcon = ({ temp }) => {
 };
 
 
-export default function ForecastCard({ day, temp, onOpenOverlay,date }) {
+export default function ForecastCard({ day, temp, onOpenOverlay, date }) {
 
   const getIcon = (t) => {
     if (t === undefined || t === null) return null;
