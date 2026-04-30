@@ -87,8 +87,12 @@ export const fetchDailyTemperature = async (req,res) => {
 
     res.json(data);
   } catch (error) {
-    console.log("FORECAST ERROR:", error.response?.data || error.message);
-    res.status(500).json({ error: "Failed to fetch Daily Temperature" });
+    // Isse Render ke logs mein pura error object dikhega
+    console.log("FULL ERROR DETAILS:", error.response?.data || error); 
+    res.status(500).json({ 
+      error: "Failed to fetch weather",
+      details: error.response?.data?.message || error.message // Client ko bhi message milega
+    });
   }
 }
 

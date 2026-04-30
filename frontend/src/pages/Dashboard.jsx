@@ -3,6 +3,8 @@ import LeftPanel from "../components/layout/LeftPanel";
 import RightPanel from "../components/layout/RightPanel";
 import BlankOverlay from "../components/overlay/BlankOverlay";
 
+const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+
 export default function Dashboard() {
   const [city, setCity] = useState("Ahmedabad");
   const [weather, setWeather] = useState(null);
@@ -28,10 +30,10 @@ export default function Dashboard() {
       try {
         setError(false);
         const [weatherRes, forecastRes, uvRes, aqiRes] = await Promise.all([
-          fetch(`http://localhost:8000/api/weather?city=${city}`),
-          fetch(`http://localhost:8000/api/forecast?city=${city}`),
-          fetch(`http://localhost:8000/api/uvindex?city=${city}`),
-          fetch(`http://localhost:8000/api/curraqi?city=${city}`)
+          fetch(`${BACKEND_URL}/api/weather?city=${city}`),
+          fetch(`${BACKEND_URL}/api/forecast?city=${city}`),
+          fetch(`${BACKEND_URL}/api/uvindex?city=${city}`),
+          fetch(`${BACKEND_URL}/api/curraqi?city=${city}`)
         ]);
 
         // Agar backend 500 error de raha hai toh yahan handle hoga
