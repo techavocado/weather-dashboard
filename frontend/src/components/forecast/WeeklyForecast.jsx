@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import ForecastCard from "./ForecastCard";
+const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+
 
 export default function WeeklyForecast({ city, onOpenOverlay }) {
   const [dailyTemp, setDailyTemp] = useState(null);
@@ -9,7 +11,7 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
 
     const getForecastData = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/dailytemp?city=${city}`);
+        const res = await fetch(`${BACKEND_URL}/api/dailytemp?city=${city}`);
 
         if (!res.ok) return;
 

@@ -25,6 +25,8 @@ ChartJS.register(
   Tooltip,
   Filler
 );
+const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+
 
 export default function BlankOverlay({ onClose, type, data, city }) {
   // 1. ADDED HOOKS HERE (At the very top level, outside renderContent)
@@ -45,7 +47,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
       const fetchHourly = async () => {
         setIsLoading(true);
         try {
-          const res = await fetch(`http://localhost:8000/api/hourlydata?city=${city}&date=${data?.date}`);
+          const res = await fetch(`${BACKEND_URL}/api/hourlydata?city=${city}&date=${data?.date}`);
           if (res.ok) {
             const fetchedData = await res.json();
             setHourlyData(fetchedData);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
 
 // --- Internal Component: AqiComponents ---
 // Isse alag file ki zaroorat nahi padegi aur error fix ho jayega
@@ -17,7 +18,7 @@ export default function CurrAqiCard({ city, onOpenOverlay }) {
 
         const getWeatherData = async () => {
             try {
-                const res = await fetch(`http://localhost:8000/api/curraqi?city=${city}`);
+                const res = await fetch(`${BACKEND_URL}/api/curraqi?city=${city}`);
                 if (!res.ok) return;
                 const data = await res.json();
                 if (!data?.list?.length) return;
