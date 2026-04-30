@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getWeatherByCity = async (city) => {
-  const API_KEY = "1c6c168d10a695816db3a0ecb8d1fd6b";
+  const API_KEY = process.env.API_KEY;
   const coords = await geocoding(city); 
 
   const res = await axios.get(
@@ -12,7 +12,7 @@ export const getWeatherByCity = async (city) => {
 };
 
 export const getForecastByCity = async (city) => {
-  const API_KEY = "1c6c168d10a695816db3a0ecb8d1fd6b";
+  const API_KEY =process.env.API_KEY;
 
   const coords = await geocoding(city); 
   
@@ -23,7 +23,7 @@ export const getForecastByCity = async (city) => {
 };
 
 const geocoding = async (city) => {
-  const API_KEY = "1c6c168d10a695816db3a0ecb8d1fd6b";
+  const API_KEY = process.env.API_KEY;
   
   try {
     const res = await axios.get(
@@ -42,7 +42,7 @@ const geocoding = async (city) => {
 };
 
 export const getHourlyAqi = async (city) => {
-  const API_KEY = "1c6c168d10a695816db3a0ecb8d1fd6b";
+  const API_KEY = process.env.API_KEY;
 
   const coords = await geocoding(city); 
   
@@ -53,7 +53,7 @@ export const getHourlyAqi = async (city) => {
 };
 
 export const getCurrentAqi = async (city) => {
-  const API_KEY = "1c6c168d10a695816db3a0ecb8d1fd6b";
+  const API_KEY = process.env.API_KEY;
 
   const coords = await geocoding(city); 
   
