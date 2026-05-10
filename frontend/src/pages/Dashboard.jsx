@@ -3,8 +3,8 @@ import LeftPanel from "../components/layout/LeftPanel";
 import RightPanel from "../components/layout/RightPanel";
 import BlankOverlay from "../components/overlay/BlankOverlay";
 
-// const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+// const BACKEND_URL = "http://localhost:8000";
 
 export default function Dashboard() {
   const [city, setCity] = useState("Ahmedabad");
