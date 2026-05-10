@@ -27,36 +27,36 @@ export default function Dashboard() {
     if (!city) return;
 
     const fetchAllData = async () => {
-      try {
-        setError(false);
-        const [weatherRes, forecastRes, uvRes, aqiRes] = await Promise.all([
-          fetch(`${BACKEND_URL}/api/weather?city=${city}`),
-          fetch(`${BACKEND_URL}/api/forecast?city=${city}`),
-          fetch(`${BACKEND_URL}/api/uvindex?city=${city}`),
-          fetch(`${BACKEND_URL}/api/curraqi?city=${city}`)
-        ]);
+  try {
+    setError(false);
 
-        // Agar backend 500 error de raha hai toh yahan handle hoga
-        if (!weatherRes.ok || !forecastRes.ok || !uvRes.ok || !aqiRes.ok) {
-          setError(true);
-          console.error("Backend failed for some city");
-          return;
-        }
+    // 1. Sab data ko fetch karo, lekin ek fail ho toh baaki na rukein
+    const [weatherRes, forecastRes, uvRes, aqiRes] = await Promise.all([
+      fetch(`${BACKEND_URL}/api/weather?city=${city}`).catch(e => ({ ok: false })),
+      fetch(`${BACKEND_URL}/api/forecast?city=${city}`).catch(e => ({ ok: false })),
+      fetch(`${BACKEND_URL}/api/uvindex?city=${city}`).catch(e => ({ ok: false })),
+      fetch(`${BACKEND_URL}/api/curraqi?city=${city}`).catch(e => ({ ok: false }))
+    ]);
 
-        const weatherData = await weatherRes.json();
-        const forecastData = await forecastRes.json();
-        const uvData = await uvRes.json();
-        const aqiData = await aqiRes.json();
+    // 2. Sirf Weather main hai, agar ye nahi aaya toh hi Error dikhao
+    if (weatherRes.ok) {
+      const weatherData = await weatherRes.json();
+      setWeather(weatherData);
+    } else {
+      setError(true); // Weather hi nahi mila toh error dikhao
+      console.error("Main weather data failed");
+    }
 
-        setWeather(weatherData);
-        setForecast(forecastData);
-        setUvValue(uvData);
-        setCurrAqi(aqiData);
+    // 3. Baaki data agar OK hai toh set karo, warna skip karo (App crash nahi hogi)
+    if (forecastRes.ok) setForecast(await forecastRes.json());
+    if (uvRes.ok) setUvValue(await uvRes.json());
+    if (aqiRes.ok) setCurrAqi(await aqiRes.json());
 
-      } catch (err) {
-        console.error("Fetch Error:", err);
-      }
-    };
+  } catch (err) {
+    console.error("Fetch Error:", err);
+    // Yahan hum error(true) nahi kar rahe taaki partial data dikhta rahe
+  }
+};
 
     fetchAllData();
   }, [city]);

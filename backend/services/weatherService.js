@@ -27,7 +27,7 @@ const geocoding = async (city) => {
   
   try {
     const res = await axios.get(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${API_KEY}`
+      `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${API_KEY}`
     );
   
     if (res.data && res.data.length > 0) {
@@ -47,7 +47,7 @@ export const getHourlyAqi = async (city) => {
   const coords = await geocoding(city); 
   
   const res = await axios.get(
-    `http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`
   );
   return res.data;
 };
@@ -58,7 +58,7 @@ export const getCurrentAqi = async (city) => {
   const coords = await geocoding(city); 
   
   const res = await axios.get(
-    `http://api.openweathermap.org/data/2.5/air_pollution?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`
+    `https://api.openweathermap.org/data/2.5/air_pollution?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`
   );
   return res.data;
 };
