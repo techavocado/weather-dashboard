@@ -1,4 +1,4 @@
-import { getWeatherByCity, getForecastByCity, getCurrentAqi , getHourlyUVIndex, getDailyTemperature ,getHourlyTemp } from "../services/weatherService.js";
+import { getWeatherByCity, getForecastByCity, getCurrentAqi , getDailyTemperature  } from "../services/weatherService.js";
 
 export const fetchWeather = async (req, res) => {
   try {
@@ -18,6 +18,8 @@ export const fetchWeather = async (req, res) => {
       condition: data.weather[0].main,
       sunrise: new Date(data.sys.sunrise * 1000).toLocaleTimeString([], options),
       sunset: new Date(data.sys.sunset * 1000).toLocaleTimeString([], options),
+      lat : data.coord.lat,
+      lon : data.coord.lon,
     };
 
     res.json(cleanedData);
@@ -66,19 +68,6 @@ export const fetchCurrAqi = async (req,res) => {
   }
 }
 
-export const fetchHourlyUVIndex = async (req,res) => {
-  try {
-    const city = req.query.city || "Ahmedabad";
-
-    const data = await getHourlyUVIndex(city);
-    
-    res.json(data);
-  } catch (error) {
-    console.log("FORECAST ERROR:", error.response?.data || error.message);
-    res.status(500).json({ error: "Failed to fetch Current Aqi" });
-  }
-}
-
 export const fetchDailyTemperature = async (req,res) => {
   try {
     const city = req.query.city || "Ahmedabad";
@@ -93,19 +82,5 @@ export const fetchDailyTemperature = async (req,res) => {
       error: "Failed to fetch weather",
       details: error.response?.data?.message || error.message // Client ko bhi message milega
     });
-  }
-}
-
-export const fetchHourlyTemp = async (req,res) => {
-  try {
-    const city = req.query.city || "Ahmedabad";
-    const date = req.query.date || "2026-04-29";
-
-    const data = await getHourlyTemp(city,date);
-
-    res.json(data);
-  } catch (error) {
-    console.log("FORECAST ERROR:", error.response?.data || error.message);
-    res.status(500).json({ error: "Failed to fetch Hourly Temp and Wind" });
   }
 }

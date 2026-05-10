@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+// const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+const BACKEND_URL = "http://localhost:8000";
 
 // --- Internal Component: AqiComponents ---
 // Isse alag file ki zaroorat nahi padegi aur error fix ho jayega

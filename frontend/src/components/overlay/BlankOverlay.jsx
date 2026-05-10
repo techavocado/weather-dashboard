@@ -25,7 +25,6 @@ ChartJS.register(
   Tooltip,
   Filler
 );
-const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
 
 
 export default function BlankOverlay({ onClose, type, data, city }) {
@@ -40,18 +39,28 @@ export default function BlankOverlay({ onClose, type, data, city }) {
       document.body.style.overflow = "auto";
     };
   }, []);
- console.log(data?.date);
+  // console.log(data?.date);
   // 2. ADDED FETCH EFFECT HERE (Runs only when type is forecast)
   useEffect(() => {
     if (type === "forecast" && city && data?.date) {
       const fetchHourly = async () => {
         setIsLoading(true);
         try {
-          const res = await fetch(`${BACKEND_URL}/api/hourlydata?city=${city}&date=${data?.date}`);
+          const coord = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+
+          const data1 = await coord.json();
+
+          let lat = data1?.results[0]?.latitude;
+          let lon = data1?.results[0]?.longitude;
+      
+        setTimeout(async ()=>{
+          const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&timezone=auto&start_date=${data?.date}&end_date=${data?.date}`);
           if (res.ok) {
             const fetchedData = await res.json();
+            console.log(fetchedData);
             setHourlyData(fetchedData);
           }
+        },1000)
         } catch (error) {
           console.error("Failed to fetch hourly forecast:", error);
         }
@@ -235,9 +244,11 @@ export default function BlankOverlay({ onClose, type, data, city }) {
     // 3. UV INDEX OVERLAY LOGIC
     // ==========================================
     if (type === "uv") {
-      const currentHour = new Date().getHours();
-      const uvArray = data?.hourly?.uv_index || [];
-      const timeArray = data?.hourly?.time || [];
+      const timezone = data?.uvValue?.timezone || "UTC";
+      const targetTimeStr = new Date().toLocaleString("en-US", { timeZone: timezone });
+      const currentHour = new Date(targetTimeStr).getHours();
+      const uvArray = data?.uvValue?.hourly?.uv_index || [];
+      const timeArray = data?.uvValue?.hourly?.time || [];
       const displayUv = uvArray.slice(currentHour, currentHour + 12);
       const displayTime = timeArray.slice(currentHour, currentHour + 12);
       const labels = displayTime.map(t => new Date(t).toLocaleTimeString([], { hour: "numeric", hour12: true }));
@@ -313,7 +324,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
       }
 
       const aqiIndex = aqiData.main.aqi;
-      const components = aqiData.components; 
+      const components = aqiData.components;
       const aqiStatus = getAqiStatus(aqiIndex);
 
       const labels = Object.keys(components).map(k => k.toUpperCase().replace('_', '.'));
@@ -325,7 +336,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           {
             label: "Concentration (μg/m³)",
             data: values,
-            backgroundColor: "#10b981", 
+            backgroundColor: "#10b981",
             borderRadius: 4,
             barThickness: 25,
           },
@@ -450,10 +461,10 @@ export default function BlankOverlay({ onClose, type, data, city }) {
             backgroundColor: "#333",
             titleColor: "#fff",
             titleFont: {
-              size : 25
+              size: 25
             },
             bodyFont: {
-                size: 16 
+              size: 16
             },
             bodyColor: "#c084fc",
             displayColors: false,
@@ -471,7 +482,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
           <div style={graphSide}>
             <h2 style={titleStyle}>Hourly Forecast - {data.day}, {city}</h2>
             <div style={chartBox}>
-              <Line data={chartData} options={chartOptionsForecast} /> 
+              <Line data={chartData} options={chartOptionsForecast} />
             </div>
           </div>
 

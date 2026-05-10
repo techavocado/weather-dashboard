@@ -3,13 +3,13 @@ import LeftPanel from "../components/layout/LeftPanel";
 import RightPanel from "../components/layout/RightPanel";
 import BlankOverlay from "../components/overlay/BlankOverlay";
 
-const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+// const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
+const BACKEND_URL = "http://localhost:8000";
 
 export default function Dashboard() {
   const [city, setCity] = useState("Ahmedabad");
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
-  const [uvValue, setUvValue] = useState(null);
   const [currAqi, setCurrAqi] = useState(null);
   const [error, setError] = useState(false);
 
@@ -31,10 +31,9 @@ export default function Dashboard() {
     setError(false);
 
     // 1. Sab data ko fetch karo, lekin ek fail ho toh baaki na rukein
-    const [weatherRes, forecastRes, uvRes, aqiRes] = await Promise.all([
+    const [weatherRes, forecastRes, aqiRes] = await Promise.all([
       fetch(`${BACKEND_URL}/api/weather?city=${city}`).catch(e => ({ ok: false })),
       fetch(`${BACKEND_URL}/api/forecast?city=${city}`).catch(e => ({ ok: false })),
-      fetch(`${BACKEND_URL}/api/uvindex?city=${city}`).catch(e => ({ ok: false })),
       fetch(`${BACKEND_URL}/api/curraqi?city=${city}`).catch(e => ({ ok: false }))
     ]);
 
@@ -49,7 +48,6 @@ export default function Dashboard() {
 
     // 3. Baaki data agar OK hai toh set karo, warna skip karo (App crash nahi hogi)
     if (forecastRes.ok) setForecast(await forecastRes.json());
-    if (uvRes.ok) setUvValue(await uvRes.json());
     if (aqiRes.ok) setCurrAqi(await aqiRes.json());
 
   } catch (err) {
@@ -70,15 +68,15 @@ export default function Dashboard() {
   return (
     <div style={{ display: "flex", height: "100vh" }}>
       <LeftPanel weather={weather} forecast={forecast} onSearchCity={handleCitySearch} error={error} onOpenOverlay={handleOpenModal} />
-      <RightPanel weather={weather} forecast={forecast} uvValue={uvValue} city={city} onOpenOverlay={handleOpenModal} />
+      <RightPanel weather={weather} forecast={forecast} city={city} onOpenOverlay={handleOpenModal} />
       {activeModal && (
         <BlankOverlay
           type={activeModal}
           city={city}
           data={
             activeModal === 'forecast' ? modalData : // Use the clicked card's data here!
-              activeModal === 'uv' ? uvValue :
                 activeModal === 'aqi' ? currAqi :
+                activeModal == 'uv' ? modalData : 
                   (activeModal === 'temp' || activeModal === 'wind') ? forecast :
                     weather
           }

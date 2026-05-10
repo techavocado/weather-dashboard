@@ -17,7 +17,7 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip);
 
-export default function RightPanel({ weather, forecast, uvValue, city , onOpenOverlay  }) {
+export default function RightPanel({ weather, forecast, city , onOpenOverlay  }) {
   // console.log(weather);
 
   const windData = forecast?.slice(0, 20).map((item) =>
@@ -52,7 +52,7 @@ export default function RightPanel({ weather, forecast, uvValue, city , onOpenOv
         {weather && (
           <>
             <WindCard windData={windData} windLabels={windLabels} forecast={forecast} onOpenOverlay={onOpenOverlay} />
-            <UVCard uvValue ={uvValue} onOpenOverlay={onOpenOverlay} />
+            <UVCard city={city} onOpenOverlay={onOpenOverlay} lat={weather?.lat} lon={weather?.lon} />
             <StatCard sunrise={weather?.sunrise} sunset={weather?.sunset} />
             <HumidityCard
               value={weather?.humidity}

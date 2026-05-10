@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ForecastCard from "./ForecastCard";
-const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
 
 
 export default function WeeklyForecast({ city, onOpenOverlay }) {
@@ -11,7 +10,15 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
 
     const getForecastData = async () => {
       try {
-        const res = await fetch(`${BACKEND_URL}/api/dailytemp?city=${city}`);
+        const coord = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+
+        const data1 = await coord.json();
+
+        let lat = data1?.results[0]?.latitude;
+        let lon = data1?.results[0]?.longitude;
+
+
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto&past_days=0&forecast_days=7`);
 
         if (!res.ok) return;
 
@@ -39,7 +46,7 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
         const dayName = new Date(dateString).toLocaleDateString("en-US", {
           weekday: "short",
         });
-        
+
         return (
           <div
             key={dateString}

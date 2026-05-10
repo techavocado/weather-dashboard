@@ -63,31 +63,11 @@ export const getCurrentAqi = async (city) => {
   return res.data;
 };
 
-export const getHourlyUVIndex = async (city) => {
-  const coords = await geocoding(city); 
-
-  const res = await axios.get(
-    `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=uv_index&timezone=auto&past_days=0&forecast_days=1`
-  );
-  return res.data;
-}
-
 export const getDailyTemperature = async (city) => {
   const coords = await geocoding(city); 
 
   const res = await axios.get(
     `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max&timezone=auto&past_days=0&forecast_days=7`
-  );
-  return res.data;
-}
-
-export const getHourlyTemp = async (city,date) => {
-  const coords = await geocoding(city); 
-
-  const date1 = new Date(date).toISOString().split('T')[0];
-
-  const res = await axios.get(
-    `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&hourly=temperature_2m&timezone=auto&start_date=${date1}&end_date=${date1}`
   );
   return res.data;
 }
