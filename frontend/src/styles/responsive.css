@@ -183,13 +183,23 @@
     padding: 16px !important;
     background: #1c1c1e !important;
     overflow: visible !important;
+
   }
 
   .search-section {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.helper-text {
+  margin: 8px 0 6px 0 !important;
+}
+
+.popular-tags {
+  margin-bottom: 0 !important;
+}
 
   .spotlight-bar {
     border-radius: 14px !important;
@@ -667,5 +677,11 @@
   .left-panel,
   [style*="width: 30%"] {
     gap: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-panel {
+    gap: 10px !important;
   }
 }
