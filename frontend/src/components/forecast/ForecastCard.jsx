@@ -444,6 +444,7 @@ export default function ForecastCard({ day, temp, onOpenOverlay, date }) {
 
   return (
     <div
+      className="forecast-card"
       style={{
         background: "#1e1e1e",
         padding: "15px",

@@ -1,0 +1,671 @@
+/* ==========================================================================
+   responsive.css — TechAvocado Weather Dashboard
+   Complete rewrite based on actual broken screenshots.
+   
+   FIXES:
+   1. Forecast cards — tiny compact chips (82px wide, ~110px tall)
+   2. Main weather card — proper layout
+   3. Grid — all 6 cards in correct 2-col pairs, no orphan gaps
+   4. AQI — no horizontal overflow
+   5. All hardcoded px sizes neutralized
+   
+   ✅ Zero desktop regression — every rule inside @media (max-width: 768px)
+   Import in main.jsx AFTER global.css:
+     import "./styles/responsive.css";
+   ========================================================================== */
+
+@media (max-width: 768px) {
+
+    
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     GLOBAL
+  ══════════════════════════════════════════════════════════════════════════ */
+  *, *::before, *::after {
+    box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  html {
+    font-size: 15px !important;
+    -webkit-text-size-adjust: 100% !important;
+  }
+
+  body, #root {
+    background: #000 !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Disable ALL hover transforms — they stick on touch screens */
+  *:hover {
+    transform: none !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     1. DASHBOARD ROOT — vertical column
+     Dashboard.jsx: <div style={{ display:"flex", height:"100vh" }}>
+  ══════════════════════════════════════════════════════════════════════════ */
+  #root > div,
+  [style*="display: flex"][style*="height: 100vh"] {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    background: #000 !important;
+    overflow-x: hidden !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+
+  [style*="width: 30%"],
+  .left-panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 20px 12px 20px 12px !important;
+    background: #000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  /* Guarantee spacing on each child card even if gap fails */
+  .left-panel > * {
+    margin-bottom: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     3. RIGHT PANEL
+     RightPanel: width:70%; padding:20px; background:#111
+     Contains: WeeklyForecast, Overview h2, Grid, AQI
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="width: 70%"] {
+    width: 100% !important;
+    padding: 10px 12px 20px 12px !important;
+    background: #000 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     4. MAIN WEATHER CARD (MainWeatherCard.jsx)
+     Fix: icon small top-left, huge temp below — should be side-by-side
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Card container */
+  [style*="background: #1e1e1e"][style*="padding: 14px"][style*="border-radius: 20px"] {
+    background: #1c1c1e !important;
+    border-radius: 20px !important;
+    padding: 18px 18px 16px 18px !important;
+    width: 100% !important;
+  }
+
+  /* City name "Ahmedabad" */
+  [style*="color: #aaa"][style*="marginBottom: 8px"] {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* emoji icon ☁️ */
+  [style*="fontSize: 32px"][style*="marginBottom: 6px"] {
+    font-size: 52px !important;
+    line-height: 1 !important;
+    margin-bottom: 0 !important;
+    display: block !important;
+  }
+
+  /* Row containing h1 temp + toggle — keep it flex row */
+  [style*="display: flex"][style*="alignItems: center"][style*="justifyContent: space-between"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Big temperature "38°C" */
+  [style*="fontSize: 52px"][style*="margin: 0"] {
+    font-size: 64px !important;
+    font-weight: 700 !important;
+    letter-spacing: -3px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
+
+  /* Condition label "Clear" */
+  [style*="marginTop: 6px"][style*="color: #aaa"] {
+    font-size: 17px !important;
+    color: rgba(235,235,245,0.55) !important;
+    margin-top: 6px !important;
+  }
+
+  /* Divider line */
+  [style*="height: 1px"][style*="background: #333"] {
+    background: rgba(255,255,255,0.1) !important;
+    margin: 14px 0 !important;
+  }
+
+  /* Wind & Humidity bottom row */
+  [style*="justifyContent: space-between"][style*="fontSize: 13px"] {
+    font-size: 14px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     5. TEMPERATURE CARD (TemperatureCard.jsx)
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="background: #1e1e1e"][style*="padding: 20px"][style*="border-radius: 16px"],
+  [style*="background: #1e1e1e"][style*="padding: 20px"][style*="borderRadius: 16px"] {
+    background: #1c1c1e !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    width: 100% !important;
+  }
+
+  /* Chart height */
+  [style*="height: 140px"] {
+    height: 130px !important;
+  }
+
+  /* Morning/Afternoon/Evening/Night row */
+  [style*="justifyContent: space-between"][style*="marginTop: 15px"] {
+    margin-top: 12px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     6. IMAGE / SEARCH CARD (ImageCard.jsx)
+  ══════════════════════════════════════════════════════════════════════════ */
+  /* Kill fixed height */
+  [style*="height: 122px"],
+  [style*="background: #1e1e1e"][style*="border-radius: 16px"][style*="overflow: hidden"] {
+    height: auto !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    background: #1c1c1e !important;
+    overflow: visible !important;
+  }
+
+  .search-section {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .spotlight-bar {
+    border-radius: 14px !important;
+    padding: 13px 16px !important;
+    background: #2c2c2e !important;
+    border: 1px solid #3a3a3c !important;
+    box-shadow: none !important;
+  }
+
+  .spotlight-bar:focus-within {
+    transform: none !important;
+    background: #363638 !important;
+    border-color: #545456 !important;
+    box-shadow: none !important;
+  }
+
+  .spotlight-bar input {
+    font-size: 15px !important;
+  }
+
+  .helper-text {
+    font-size: 10px !important;
+    letter-spacing: 1px !important;
+    color: #636366 !important;
+    margin: 14px 0 9px 0 !important;
+  }
+
+  .popular-tags {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    padding-bottom: 0 !important;
+  }
+
+  .popular-tags::-webkit-scrollbar { display: none !important; }
+
+  .city-tag {
+    flex-shrink: 0 !important;
+    background: #1c1c1e !important;
+    border: 1.5px solid #3a3a3c !important;
+    border-radius: 22px !important;
+    padding: 7px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #e5e5ea !important;
+    white-space: nowrap !important;
+  }
+
+  .city-tag:hover {
+    background: #1c1c1e !important;
+    color: #e5e5ea !important;
+    border-color: #3a3a3c !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     7. WEEKLY FORECAST ROW (WeeklyForecast.jsx)
+     FIX: Cards were ~200px wide → must be compact scrollable chips
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Scroll container — uses .forecast-scroll-row class */
+  .forecast-scroll-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    padding: 4px 0 10px 0 !important;
+    margin-bottom: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    scrollbar-width: none !important;
+  }
+
+  .forecast-scroll-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Each forecast card wrapper — prevent stretch */
+  .forecast-card-wrapper {
+    flex: 0 0 auto !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Forecast card itself — compact chip */
+  .forecast-card {
+    width: 72px !important;
+    min-width: 72px !important;
+    max-width: 72px !important;
+    border-radius: 14px !important;
+    padding: 10px 4px !important;
+    background: #1c1c1e !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .forecast-card svg {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .forecast-card p {
+    font-size: 12px !important;
+    margin: 4px 0 !important;
+  }
+
+  .forecast-card h3 {
+    font-size: 13px !important;
+    margin: 4px 0 0 0 !important;
+  }
+  /* ══════════════════════════════════════════════════════════════════════════
+     8. TODAY'S OVERVIEW HEADING
+  ══════════════════════════════════════════════════════════════════════════ */
+  h2[style*="color: white"],
+  h2 {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.3px !important;
+    margin: 8px 0 12px 0 !important;
+    padding: 0 !important;
+    color: #fff !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     9. OVERVIEW GRID — 2-column equal layout
+     RightPanel: display:grid; gridTemplateColumns:repeat(3,325px)
+     
+     Grid children order from RightPanel.jsx:
+       1. WindCard
+       2. UVCard
+       3. StatCard (Sunrise/Sunset) ← full width
+       4. HumidityCard
+       5. VisibilityCard
+       6. FeelsLikeCard
+     
+     FIX: FeelsLikeCard (6th) was showing alone with empty right cell
+     We pair it with nothing — leave it half-width OR make it full-width
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="display: grid"],
+  [style*="gridTemplateColumns"],
+  [style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    column-gap: 10px !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+    align-items: stretch !important;
+  }
+
+  /* StatCard (3rd child = Sunrise/Sunset) → full width */
+  [style*="display: grid"] > *:nth-child(3) {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* FeelsLikeCard (6th child) → full width to avoid lonely left card */
+  [style*="display: grid"] > *:nth-child(6) {
+    grid-column: 1 / -1 !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     10. ALL STAT CARDS (.card)
+  ══════════════════════════════════════════════════════════════════════════ */
+  .card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+    background: #1c1c1e !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  .card:hover { transform: none !important; }
+
+  .card-title {
+    font-size: 12px !important;
+    color: #98989d !important;
+  }
+
+  .card-value {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+  }
+
+  /* Kill hardcoded widths */
+  [style*="width: 280px"],
+  [style*="width: 310px"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* StatCard (sunrise/sunset) height */
+  [style*="height: 225px"] {
+    height: auto !important;
+    min-height: 150px !important;
+  }
+
+  /* UVCard height */
+  [style*="height: 210px"] {
+    height: auto !important;
+    min-height: 150px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     11. WIND CARD
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="height: 130px"] {
+    height: 90px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     12. UV INDEX CARD — scale down donut
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="height: 150px"][style*="display: flex"][style*="alignItems: center"] {
+    height: 110px !important;
+  }
+
+  /* Outer ring */
+  [style*="width: 140px"][style*="height: 140px"][style*="borderRadius: 50%"] {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  /* Inner cutout */
+  [style*="width: 120px"][style*="height: 120px"][style*="borderRadius: 50%"] {
+    width: 84px !important;
+    height: 84px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     13. BIG VALUE TEXT (Humidity / Visibility / FeelsLike)
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="fontSize: 30px"] {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     14. AQI CARD — class-based selectors for reliable mobile layout
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  /* AQI card container — full width, auto height, stack vertically */
+  .aqi-card-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+  }
+
+  /* Inner content wrapper — stack status + metrics vertically */
+  .aqi-content {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    gap: 14px !important;
+  }
+
+  /* Pollutants container — 2×2 grid instead of horizontal flex */
+  .aqi-metrics {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    flex: none !important;
+  }
+
+  /* Pollutant pills — fill their grid cells */
+  .aqi-pill {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 6px !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     15. STAT CARD — Sunrise / Sunset (StatCard.jsx)
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Arc SVG section height */
+  [style*="position: relative"][style*="flex: 1"][style*="minHeight: 55px"] {
+    min-height: 45px !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     16. OVERLAY (BlankOverlay.jsx) — iOS bottom sheet
+  ══════════════════════════════════════════════════════════════════════════ */
+  [style*="position: fixed"][style*="zIndex: 999"] {
+    align-items: flex-end !important;
+  }
+
+  [style*="width: 1020px"] {
+    width: 100vw !important;
+    height: 88vh !important;
+    max-height: 88vh !important;
+    border-radius: 26px 26px 0 0 !important;
+    padding: 32px 16px 20px 16px !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  [style*="width: 1020px"]::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.2);
+    pointer-events: none;
+  }
+
+  [style*="position: absolute"][style*="top: 15px"][style*="right: 20px"] {
+    top: 12px !important;
+    right: 14px !important;
+    font-size: 20px !important;
+    color: rgba(255,255,255,0.35) !important;
+  }
+
+  [style*="display: flex"][style*="gap: 30px"][style*="height: 100%"] {
+    flex-direction: column !important;
+    gap: 14px !important;
+    height: auto !important;
+    margin-top: 6px !important;
+  }
+
+  [style*="flex: 2"] {
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  [style*="background: transparent"][style*="marginTop: 20px"][style*="position: relative"] {
+    height: 190px !important;
+    flex: none !important;
+    margin-top: 10px !important;
+  }
+
+  [style*="flex: 1"][style*="background: #252525"] {
+    flex: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px !important;
+    border-radius: 14px !important;
+    max-height: none !important;
+  }
+
+  [style*="fontSize: 24px"][style*="fontWeight: 600"] {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
+
+  [style*="padding: 12px 0"] {
+    padding: 9px 0 !important;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     17. GLOBAL POLISH
+  ══════════════════════════════════════════════════════════════════════════ */
+
+  /* Progress bars */
+  [style*="height: 6px"][style*="borderRadius: 10px"] {
+    height: 5px !important;
+  }
+
+  /* Universal scrollbar hide */
+  [style*="overflow-x: auto"]::-webkit-scrollbar,
+  [style*="overflowX: auto"]::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  [style*="overflow-x: auto"],
+  [style*="overflowX: auto"] {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   SMALL PHONES ≤ 390px
+════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 390px) {
+
+  html { font-size: 14px !important; }
+
+  [style*="fontSize: 52px"][style*="margin: 0"] {
+    font-size: 56px !important;
+    letter-spacing: -2px !important;
+  }
+
+  [style*="width: 30%"] {
+    padding: 10px 10px 0 10px !important;
+  }
+
+  [style*="width: 70%"] {
+    padding: 8px 10px 16px 10px !important;
+  }
+
+  .card {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Forecast cards — even narrower on small phones */
+  .forecast-card {
+    width: 62px !important;
+    min-width: 62px !important;
+    max-width: 62px !important;
+    padding: 8px 3px !important;
+  }
+
+  .forecast-card svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .forecast-card h3 {
+    font-size: 10px !important;
+  }
+
+  .forecast-card p {
+    font-size: 10px !important;
+  }
+
+  /* Tighter grid */
+  [style*="display: grid"] {
+    gap: 8px !important;
+  }
+
+  /* AQI pills — smaller on tiny phones */
+  .aqi-pill {
+    padding: 6px 4px !important;
+  }
+
+  .aqi-pill span {
+    font-size: 12px !important;
+  }
+
+  /* Overlay full screen on tiny phones */
+  [style*="width: 1020px"] {
+    height: 92vh !important;
+    max-height: 92vh !important;
+    padding: 28px 12px 16px 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Force spacing between the first 3 cards */
+  .left-panel > *:not(:last-child),
+  [style*="width: 30%"] > *:not(:last-child) {
+    margin-bottom: 8px !important;
+  }
+
+  /* Disable flex gap to avoid conflicts */
+  .left-panel,
+  [style*="width: 30%"] {
+    gap: 0 !important;
+  }
+}

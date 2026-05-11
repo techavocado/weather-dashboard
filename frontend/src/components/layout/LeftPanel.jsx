@@ -74,7 +74,7 @@ export default function LeftPanel({ weather, forecast, onSearchCity, error , onO
     };
 
     return (
-        <div style={{
+        <div className="left-panel" style={{
             width: "30%",
             padding: "20px",
             display: "flex",

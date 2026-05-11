@@ -5,7 +5,7 @@ const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
 // --- Internal Component: AqiComponents ---
 // Isse alag file ki zaroorat nahi padegi aur error fix ho jayega
 const AqiComponents = ({ name, value }) => (
-    <div style={styles.metricItem}>
+    <div className="aqi-pill" style={styles.metricItem}>
         <span style={styles.metricName}>{name}</span>
         <span style={styles.metricValue}>{value ?? "--"}</span>
     </div>
@@ -47,10 +47,11 @@ export default function CurrAqiCard({ city, onOpenOverlay }) {
 
     return (
         <div 
+            className="aqi-card-container"
             style={styles.aqiCardContainer} 
             onClick={() => onOpenOverlay && onOpenOverlay('aqi')}
         >
-            <div style={styles.aqiContent}>
+            <div className="aqi-content" style={styles.aqiContent}>
                 {/* Left Side: Main AQI Status */}
                 <div style={styles.aqiStatus}>
                     <p style={styles.aqiTitle}>Air Quality</p>
@@ -67,7 +68,7 @@ export default function CurrAqiCard({ city, onOpenOverlay }) {
                 </div>
 
                 {/* Right Side: Pollutants (Distributed position) */}
-                <div style={styles.aqiMetrics}>
+                <div className="aqi-metrics" style={styles.aqiMetrics}>
                     <AqiComponents name="PM2.5" value={components?.pm2_5} />
                     <AqiComponents name="PM10" value={components?.pm10} />
                     <AqiComponents name="O3" value={components?.o3} />

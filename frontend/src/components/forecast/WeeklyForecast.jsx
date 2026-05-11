@@ -41,7 +41,7 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
   const dates = dailyTemp.daily.time;
 
   return (
-    <div style={{ display: "flex", gap: "15px", marginBottom: "20px" }}>
+    <div className="forecast-scroll-row" style={{ display: "flex", gap: "15px", marginBottom: "20px" }}>
       {dates.map((dateString, index) => {
         const dayName = new Date(dateString).toLocaleDateString("en-US", {
           weekday: "short",
@@ -50,6 +50,7 @@ export default function WeeklyForecast({ city, onOpenOverlay }) {
         return (
           <div
             key={dateString}
+            className="forecast-card-wrapper"
             style={{
               cursor: "pointer",
               transition: "transform 0.2s ease"
