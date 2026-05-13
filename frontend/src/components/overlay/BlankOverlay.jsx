@@ -13,7 +13,6 @@ import {
   Filler,
 } from "chart.js";
 
-// Sabhi scales aur elements ko register kiya
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -432,7 +431,7 @@ export default function BlankOverlay({ onClose, type, data, city }) {
         datasets: [{
           label: "Temperature (°C)",
           data: temps,
-          borderColor: "#c084fc", // Purple to distinguish from normal temp
+          borderColor: "#c084fc", 
           borderWidth: 3,
           tension: 0.4,
           fill: true,

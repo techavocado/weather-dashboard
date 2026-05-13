@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 const BACKEND_URL = "https://weather-dashboard-rsgt.onrender.com";
 // const BACKEND_URL = "http://localhost:8000";
 
-// --- Internal Component: AqiComponents ---
-// Isse alag file ki zaroorat nahi padegi aur error fix ho jayega
 const AqiComponents = ({ name, value }) => (
     <div className="aqi-pill" style={styles.metricItem}>
         <span style={styles.metricName}>{name}</span>
@@ -86,7 +84,7 @@ const styles = {
         borderRadius: "16px",
         marginTop: "12px",
         width: "98.5%", 
-        height: "100px", // Reverted to original compact height
+        height: "100px", 
         cursor: "pointer",
         padding: "0 20px",
         boxSizing: "border-box",
@@ -146,7 +144,7 @@ const styles = {
         alignItems: "center",
         backgroundColor: "#252525", 
         borderRadius: "12px", 
-        padding: "15px", // Compact padding to fit in 90px card
+        padding: "15px", 
         paddingBottom : "5px",
         minWidth: "70px",
         height: "50px"

@@ -454,7 +454,7 @@ export default function ForecastCard({ day, temp, onOpenOverlay, date }) {
         color: "white",
         textAlign: "center",
         width: "94px",
-        cursor: "pointer" /* Clickable look */
+        cursor: "pointer"
       }}
       onClick={() =>
         onOpenOverlay("forecast", {

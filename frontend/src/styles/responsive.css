@@ -1,17 +1,6 @@
 /* ==========================================================================
    responsive.css — TechAvocado Weather Dashboard
    Complete rewrite based on actual broken screenshots.
-   
-   FIXES:
-   1. Forecast cards — tiny compact chips (82px wide, ~110px tall)
-   2. Main weather card — proper layout
-   3. Grid — all 6 cards in correct 2-col pairs, no orphan gaps
-   4. AQI — no horizontal overflow
-   5. All hardcoded px sizes neutralized
-   
-   ✅ Zero desktop regression — every rule inside @media (max-width: 768px)
-   Import in main.jsx AFTER global.css:
-     import "./styles/responsive.css";
    ========================================================================== */
 
 @media (max-width: 768px) {
@@ -38,7 +27,6 @@
     padding: 0 !important;
   }
 
-  /* Disable ALL hover transforms — they stick on touch screens */
   *:hover {
     transform: none !important;
   }
@@ -69,7 +57,6 @@
     gap: 24px !important;
   }
 
-  /* Guarantee spacing on each child card even if gap fails */
   .left-panel > * {
     margin-bottom: 0 !important;
     flex-shrink: 0 !important;
@@ -89,7 +76,6 @@
 
   /* ══════════════════════════════════════════════════════════════════════════
      4. MAIN WEATHER CARD (MainWeatherCard.jsx)
-     Fix: icon small top-left, huge temp below — should be side-by-side
   ══════════════════════════════════════════════════════════════════════════ */
 
   /* Card container */
@@ -341,17 +327,6 @@
   /* ══════════════════════════════════════════════════════════════════════════
      9. OVERVIEW GRID — 2-column equal layout
      RightPanel: display:grid; gridTemplateColumns:repeat(3,325px)
-     
-     Grid children order from RightPanel.jsx:
-       1. WindCard
-       2. UVCard
-       3. StatCard (Sunrise/Sunset) ← full width
-       4. HumidityCard
-       5. VisibilityCard
-       6. FeelsLikeCard
-     
-     FIX: FeelsLikeCard (6th) was showing alone with empty right cell
-     We pair it with nothing — leave it half-width OR make it full-width
   ══════════════════════════════════════════════════════════════════════════ */
   [style*="display: grid"],
   [style*="gridTemplateColumns"],

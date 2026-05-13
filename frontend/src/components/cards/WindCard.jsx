@@ -31,7 +31,6 @@ export default function WindCard({ windData, windLabels, forecast, onOpenOverlay
 
 
   return (
-    // Yahan 'wind' likhna zaroori hai
     <div onClick={() => onOpenOverlay?.('wind')} style={{ width: "280px", height: "210px", cursor: "pointer", transition: "transform 0.2s ease" }} className="card">      {/* Title */}
       <p style={{ marginBottom: "10px" }}>Wind Status</p>
 

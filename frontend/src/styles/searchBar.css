@@ -1,16 +1,15 @@
 .search-section {
   width: 100%;
-  max-width: 340px; /* Aapke left panel ki width ke hisaab se */
+  max-width: 340px; 
   margin: 20px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
 }
 
-/* 1. Apple Spotlight Search Bar */
 .spotlight-bar {
   display: flex;
   align-items: center;
   background-color: #1e1e1e;
-  border-radius: 20px; /* Pill shape */
+  border-radius: 20px; 
   padding: 14px 18px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -18,12 +17,11 @@
   border-color: gray;
 }
 
-/* Daring focus effect */
 .spotlight-bar:focus-within {
   background-color: #252527;
   border: 1px solid #4a4a4c;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px); /* Slight lift */
+  transform: translateY(-2px); 
 }
 
 .spotlight-bar input {
@@ -47,10 +45,9 @@
 }
 
 .spotlight-bar:focus-within .search-icon {
-  color: #facc15; /* Yellow accent on focus to match your temp card */
+  color: #facc15; 
 }
 
-/* 2. Space Filler Text & Tags */
 .helper-text {
   font-size: 12px;
   color: #71717a;
